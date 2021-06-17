@@ -1,0 +1,20 @@
+HTTP/1.1 200 OK
+Content-Type: application/json; charset=utf-8
+
+{
+  "services": [
+	{
+		"name": "简单吃吃",
+		"url": "/simple"
+	},
+        {
+                "name": "团队聚餐",
+                "url": "/group"
+        },
+        {
+                "name": "手气不错",
+                "url": "/lucky"
+        }
+]
+}
+
