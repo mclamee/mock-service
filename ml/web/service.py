@@ -1,4 +1,7 @@
 import tensorflow as tf
+import psycopg2
+
+conn = psycopg2.connect(database="what_to_eat", user="postgres",password="align", host="localhost", port="5432")
 
 
 def load_users_foods(users, foods):
@@ -32,12 +35,61 @@ def load_foods_features(foods, features):
 
 
 def load_foods():
-    return ['桃源春卷', '三圣面', '大食代', '高级茶餐厅', '海底捞', '山西手工面']
+    cursor = conn.cursor()
+    cursor.execute("select name from restauarants")
+    rows = cursor.fetchall()
+    cursor.close()
+
+    result = []
+    for row in rows:
+        result.append(row[0])
+
+    #return ['桃源春卷', '三圣面', '大食代', '高级茶餐厅', '海底捞', '山西手工面']
+
+    print(result)
+    return result
 
 
 def load_features():
-    return ['清淡', '重口', '辣椒', '健康', '减肥餐', '我爱面食', '我爱米饭', '特色', '本地', '网红', '价格低', '价格中', '价格高']
+    cursor = conn.cursor()
+    cursor.execute("select feature from features")
+    rows = cursor.fetchall()
+    cursor.close()
+
+    result = []
+    for row in rows:
+        result.append(row[0])
+    return result
 
 
 def load_users():
-    return ['清淡,25,ANY', '重口,25,ANY', '清淡,50,中餐', '清淡,100,ANY']
+    cursor = conn.cursor()
+    cursor.execute("select name from users")
+    rows = cursor.fetchall()
+    cursor.close()
+
+    result = []
+    for row in rows:
+        result.append(row[0])
+    # return ['清淡,25,ANY', '重口,25,ANY', '清淡,50,中餐', '清淡,100,ANY']
+    return result
+
+
+def save_user(name):
+    cursor = conn.cursor()
+    cursor.execute("select * from users")
+    rows = cursor.fetchall()
+    cursor.close()
+
+    for row in rows:
+        print('id = ',row[0], 'name = ', row[1], '\n')
+        if row[1] == name:
+            return name
+
+    cursor = conn.cursor()
+    cursor.execute("INSERT INTO users(name) values('{}')".format(name))
+    conn.commit()
+
+    return True
+
+# conn.close()
