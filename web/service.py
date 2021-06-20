@@ -1,3 +1,5 @@
+# coding=UTF-8
+
 import tensorflow as tf
 import psycopg2
 import os
