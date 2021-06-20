@@ -8,6 +8,7 @@ from recomm import Recomm
 app = flask.Flask(__name__)
 app.config["DEBUG"] = True
 
+
 @app.route('/recommend', methods=['GET'])
 def recommend():
     userid = request.args.get('userid')

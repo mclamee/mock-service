@@ -1,7 +1,18 @@
 import tensorflow as tf
 import psycopg2
+import os
 
-conn = psycopg2.connect(database="what_to_eat", user="postgres",password="align", host="localhost", port="5432")
+server_env = os.environ.get('SERVER_ENV', 'DEV')
+
+if server_env == 'PROD':
+    pg_db = os.environ['PG_DB']
+    pg_user = os.environ['PG_USER']
+    pg_pwd = os.environ['PG_PWD']
+    pg_host = os.environ['PG_HOST']
+    pg_port = os.environ['PG_PORT']
+    conn = psycopg2.connect(database=pg_db, user=pg_user,password=pg_pwd, host=pg_host, port=pg_port)
+else:
+    conn = psycopg2.connect(database="what_to_eat", user="postgres",password="align", host="localhost", port="5432")
 
 
 def load_users_foods(users, foods):
